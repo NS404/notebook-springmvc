@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css" th:href="@{/style.css}">
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+  <title>Notebook Thymeleaf</title>
+</head>
+<body>
+
+<div id="mainDiv">
+  <div id="leftSideDiv">
+
+    <div th:insert="notes-fragment :: notes"></div>
+
+    <div class="buttonBar">
+      <button class="openNewNoteButton" id="openNewNoteButton">
+        <i class="fa fa-solid fa-circle-plus"></i>
+      </button>
+    </div>
+
+  </div>
+  <div id="rightSideDiv">
+
+    <div th:insert="categories-fragment :: cats"></div>
+
+    <div class="newCategoryDiv">
+      <div class="newCategoryInputs" >
+        <input placeholder="New Category" id="newCategoryName" type="text">
+        <button id="newCategoryButton">Create</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="newNoteDiv" id="newNoteDiv">
+  <div class="newNoteHeader">
+    <div class="title">New Note</div>
+    <button class="close-button" id="closeNewNoteButton">&times;</button>
+  </div>
+  <div class="newNoteBody">
+    <input placeholder="Title" id="newNoteTitle" type="text">
+    <textarea placeholder="Note" name="noteContentArea" id="noteContentArea" cols="30" rows="10"></textarea>
+    <button id="writeNoteButton">Note</button>
+  </div>
+</div>
+<div id="overlay"></div>
+
+<script src="https://unpkg.com/systemjs@6.11.0/dist/s.js"></script>
+<script src="https://unpkg.com/systemjs@6.11.0/dist/extras/named-register.min.js"></script>
+<script src="bundle.js"></script>
+<script type="module">
+  System.import('app');
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div id="categoriesDiv" th:fragment="cats">
+    <div th:attr="data-id=${cat.id}"  class="category" th:classappend="${cat.name == selectedCategory} ? selectedCategory"  th:if="${!categories.isEmpty() and categories != null}" th:each="cat : ${categories}">
+        <button class="deleteCatButton">
+            <i class="fa fa-light fa-trash"></i>
+        </button>
+        <h3 class="categoryName" th:text="${cat.name}">Category Name</h3>
+        <p class="noteCount" th:text="${cat.notes.size()}">Notes Count</p>
+    </div>
+</div>
+
+</body>
+</html>

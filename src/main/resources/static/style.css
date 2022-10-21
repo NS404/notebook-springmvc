@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#mainDiv{
+    display: flex;
+}
+
+#leftSideDiv {
+    height: 100vh;
+}
+
+#rightSideDiv {
+    height: 100vh;
+}
+
+.newCategoryDiv {
+    height: 10vh;
+    background-color: rgb(225, 223, 220);
+    position: relative;
+}
+
+.newCategoryInputs {
+    position: absolute;
+    top: 1rem;
+    width: 100%;
+    padding: 0;
+}
+
+#newCategoryName {
+    padding: 1rem;
+    width: 75%;
+    font-size: 0.85rem;
+}
+
+#newCategoryButton {
+    padding: 1rem;
+    width: 20%;
+}
+
+#categoriesDiv{
+    background-color: rgb(225, 223, 220);
+    height: 90vh;
+    width: 20vw;
+}
+
+.category{
+    margin-bottom: 10px;
+    background-color: #ce9c9c;
+    width: 100%;
+    height: 4rem;
+    cursor: pointer;
+    position: relative;
+}
+
+.selectedCategory{
+    background-color: #a27676;
+}
+
+.deleteCatButton {
+    position: absolute;
+    right: 20px;
+    height: 100%;
+    width: 50px;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.categoryTitle{
+    pointer-events: none;
+
+}
+
+.newNoteDiv {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    max-width: 80%;
+}
+
+.newNoteDiv.active {
+    transform: translate(-50%, -50%) scale(1);
+
+}
+
+.newNoteHeader {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+    background-color: #dae4f5;
+}
+
+.newNoteHeader .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.newNoteHeader .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.newNoteBody {
+    display: flex;
+    flex-direction: column;
+}
+
+#newNoteTitle {
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#noteContentArea {
+    font-size: 1rem;
+
+}
+
+#writeNoteButton {
+    padding: 1rem;
+}
+
+#overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+
+}
+
+#overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#notesDiv{
+    flex-wrap: wrap;
+    background-color: rgb(157, 195, 229);
+    height: 90vh;
+    width: 80vw;
+    display: flex;
+    align-content: flex-start;
+    overflow-wrap: break-word;
+}
+
+.buttonBar {
+    height: 10vh;
+    position: relative;
+    background-color: rgb(157, 195, 229);
+}
+
+#openNewNoteButton {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.1rem;
+    padding: 1rem;
+    background-color: transparent;
+    font-size: 4rem;
+    border: none;
+    cursor: pointer;
+    transition: color 0.5s;
+}
+
+#openNewNoteButton:hover {
+    color: white;
+
+
+}
+
+.note{
+    background-color: yellow;
+    padding: 0.5em;
+    height: 200px;
+    width: 200px;
+    text-align: center;
+    margin: 10px;
+    position: relative;
+
+}
+
+.noteContent {
+    text-wrap: normal;
+}
+
+.deleteNoteButton {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    color: gray;
+    cursor: pointer;
+
+}
+
+.noteCount {
+    pointer-events: none;
+    font-size: 20px;
+
+}
+
+.categoryName {
+    pointer-events: none;
+
+}
+
+.fa {
+    pointer-events: none;
+}
+
+
