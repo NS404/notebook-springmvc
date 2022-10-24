@@ -92,4 +92,9 @@ public class NotebookService {
             categories.remove(categoryToDelete);
 
     }
+
+    public void editNote(String noteId, String editedTitle, String editedContent) {
+        noteRepo.updateNote(editedTitle,editedContent,Integer.parseInt(noteId));
+        selectedCategory.setNotes(noteRepo.getNOtesByCategory(selectedCategory));
+    }
 }

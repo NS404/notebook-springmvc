@@ -7,7 +7,7 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
         integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css" th:href="@{/style.css}">
+  <link rel="stylesheet" href="public/style.css" th:href="@{/public/style.css}">
   <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
   <title>Notebook Thymeleaf</title>
 </head>
@@ -47,6 +47,7 @@
   <div class="newNoteBody">
     <input placeholder="Title" id="newNoteTitle" type="text">
     <textarea placeholder="Note" name="noteContentArea" id="noteContentArea" cols="30" rows="10"></textarea>
+    <input id="noteIdHidden" type="hidden">
     <button id="writeNoteButton">Note</button>
   </div>
 </div>
@@ -54,7 +55,7 @@
 
 <script src="https://unpkg.com/systemjs@6.11.0/dist/s.js"></script>
 <script src="https://unpkg.com/systemjs@6.11.0/dist/extras/named-register.min.js"></script>
-<script src="bundle.js"></script>
+<script src="public/bundle.js"></script>
 <script type="module">
   System.import('app');
 </script>
