@@ -1,33 +1,87 @@
 System.register("app", [], function (exports_1, context_1) {
     "use strict";
-    var context, writeNoteButton, newCategoryButton, openNewNoteButton, closeNewNoteButton, newNotePopup, overlay;
+    var context, editMode, writeNoteButton, newCategoryButton, openNewNoteButton, closeNewNoteButton, newNotePopup, overlay;
     var __moduleName = context_1 && context_1.id;
     function closeNewNotePopup() {
         newNotePopup.classList.remove('active');
         overlay.classList.remove('active');
+        document.getElementById("newNoteTitle").value = "";
+        document.getElementById("noteContentArea").value = "";
     }
-    function openNewNotePopup() {
+    function openNewNotePopup(event) {
         newNotePopup.classList.add('active');
         overlay.classList.add('active');
+        if (editMode) {
+            let noteElm = (event === null || event === void 0 ? void 0 : event.target).parentElement;
+            let noteId = noteElm.getAttribute("data-id");
+            let noteTitle = noteElm.querySelector(".noteTitle").innerText;
+            let noteContent = noteElm.querySelector(".noteContent").innerText;
+            document.getElementById("newNoteTitle").value = noteTitle;
+            document.getElementById("noteContentArea").value = noteContent;
+            writeNoteButton.innerText = "Edit";
+            writeNoteButton.removeEventListener("click", createNote);
+            writeNoteButton.addEventListener("click", function () {
+                editNote(noteId);
+            });
+        }
+        else {
+            writeNoteButton.innerText = "Note";
+            // @ts-ignore
+            writeNoteButton.removeEventListener("click", editNote);
+            writeNoteButton.addEventListener("click", createNote);
+        }
+    }
+    function addEditNoteButtonListener() {
+        $(".editNoteButton").click(function () {
+            editMode = true;
+            openNewNotePopup(event);
+        });
+    }
+    function addEditCatButtonListener() {
+        $(".editCatButton").click(function () {
+            editCategory(event);
+        });
     }
     function addDeleteCatButtonListeners() {
         $(".deleteCatButton").click(function () {
-            // @ts-ignore
             deleteCategory(event);
         });
     }
     function addDeleteNoteButtonListeners() {
         $(".deleteNoteButton").click(function () {
-            // @ts-ignore
             deleteNote(event);
         });
     }
     function addCategoryListeners() {
         $(".category").click(function () {
-            // @ts-ignore
             clickCategory(event);
         });
         addDeleteCatButtonListeners();
+    }
+    function editNote(noteId) {
+        let noteTitleInput = document.getElementById('newNoteTitle');
+        let noteContentInput = document.getElementById('noteContentArea');
+        if (noteTitleInput.value.trim().length && noteContentInput.value.trim().length) {
+            let editedTitle = document.getElementById('newNoteTitle').value;
+            document.getElementById('newNoteTitle').value = '';
+            let editedContent = document.getElementById('noteContentArea').value;
+            document.getElementById('noteContentArea').value = '';
+            let noteElm = event.target.parentElement;
+            let noteId = noteElm.getAttribute("data-id");
+            $.ajax({
+                async: false,
+                type: "PUT",
+                url: context + "/Notes/edit",
+                data: { noteId: noteId, editedTitle: editedTitle, editedContent: editedContent },
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    noteElm.querySelector(".noteTitle").innerText = editedTitle;
+                    noteElm.querySelector(".noteContent").innerText = editedContent;
+                }
+            });
+        }
+    }
+    function editCategory(event) {
     }
     function createNote() {
         let noteTitleInput = document.getElementById('newNoteTitle');
@@ -147,18 +201,24 @@ System.register("app", [], function (exports_1, context_1) {
         setters: [],
         execute: function () {
             context = "";
+            editMode = false;
             writeNoteButton = document.getElementById('writeNoteButton');
-            writeNoteButton.addEventListener('click', createNote);
             newCategoryButton = document.getElementById('newCategoryButton');
             newCategoryButton.addEventListener('click', createCategory);
             openNewNoteButton = document.getElementById('openNewNoteButton');
-            openNewNoteButton.addEventListener('click', openNewNotePopup);
+            openNewNoteButton.addEventListener('click', function () {
+                editMode = false;
+                openNewNotePopup();
+            });
             closeNewNoteButton = document.getElementById('closeNewNoteButton');
             closeNewNoteButton.addEventListener('click', closeNewNotePopup);
             newNotePopup = document.getElementById('newNoteDiv');
             overlay = document.getElementById('overlay');
             addCategoryListeners();
             addDeleteNoteButtonListeners();
+            addEditNoteButtonListener();
+            addEditCatButtonListener();
+            addEditCatButtonListener();
         }
     };
 });

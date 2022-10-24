@@ -70,6 +70,17 @@
     cursor: pointer;
 }
 
+.editCatButton {
+    position: absolute;
+    right: 48px;
+    height: 100%;
+    width: 50px;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
 .categoryTitle{
     pointer-events: none;
 
@@ -214,6 +225,18 @@
     color: gray;
     cursor: pointer;
 
+}
+
+.editNoteButton {
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+    background-color: transparent;
+    border: none;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+    color: gray;
+    cursor: pointer;
 }
 
 .noteCount {

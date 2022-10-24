@@ -88,6 +88,15 @@ public class MainController {
 
     }
 
+    @RequestMapping(value = "Notes/edit", method = RequestMethod.PUT)
+    public void editNote(@RequestParam String noteId,
+                           @RequestParam String editedTitle,
+                           @RequestParam String editedContent){
+
+        notebookService.editNote(noteId,editedTitle,editedContent);
+
+    }
+
     @RequestMapping(value = "Categories/delete", method = RequestMethod.DELETE)
     public String deleteCategory(@RequestParam String categoryId, Model model){
 
