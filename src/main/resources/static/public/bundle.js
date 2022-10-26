@@ -18,15 +18,13 @@ System.register("app", [], function (exports_1, context_1) {
             let noteContent = noteElm.querySelector(".noteContent").innerText;
             document.getElementById("newNoteTitle").value = noteTitle;
             document.getElementById("noteContentArea").value = noteContent;
+            document.getElementById("noteIdHidden").value = noteId;
             writeNoteButton.innerText = "Edit";
             writeNoteButton.removeEventListener("click", createNote);
-            writeNoteButton.addEventListener("click", function () {
-                editNote(noteId);
-            });
+            writeNoteButton.addEventListener("click", editNote);
         }
         else {
             writeNoteButton.innerText = "Note";
-            // @ts-ignore
             writeNoteButton.removeEventListener("click", editNote);
             writeNoteButton.addEventListener("click", createNote);
         }
@@ -57,26 +55,28 @@ System.register("app", [], function (exports_1, context_1) {
             clickCategory(event);
         });
         addDeleteCatButtonListeners();
+        addEditCatButtonListener();
     }
-    function editNote(noteId) {
+    function editNote(event) {
         let noteTitleInput = document.getElementById('newNoteTitle');
         let noteContentInput = document.getElementById('noteContentArea');
+        let noteId = document.getElementById("noteIdHidden").value;
         if (noteTitleInput.value.trim().length && noteContentInput.value.trim().length) {
             let editedTitle = document.getElementById('newNoteTitle').value;
             document.getElementById('newNoteTitle').value = '';
             let editedContent = document.getElementById('noteContentArea').value;
             document.getElementById('noteContentArea').value = '';
             let noteElm = event.target.parentElement;
-            let noteId = noteElm.getAttribute("data-id");
             $.ajax({
-                async: false,
+                async: true,
                 type: "PUT",
                 url: context + "/Notes/edit",
                 data: { noteId: noteId, editedTitle: editedTitle, editedContent: editedContent },
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-                    noteElm.querySelector(".noteTitle").innerText = editedTitle;
-                    noteElm.querySelector(".noteContent").innerText = editedContent;
+                success: function (data) {
+                    $("#notesDiv").replaceWith(data);
+                    addDeleteNoteButtonListeners();
+                    addEditNoteButtonListener();
+                    closeNewNotePopup();
                 }
             });
         }
@@ -99,6 +99,7 @@ System.register("app", [], function (exports_1, context_1) {
                 success: function (data) {
                     $("#notesDiv").replaceWith(data);
                     addDeleteNoteButtonListeners();
+                    addEditNoteButtonListener();
                     updateCategories();
                 }
             });
@@ -131,6 +132,7 @@ System.register("app", [], function (exports_1, context_1) {
                 $("#notesDiv").append(data);
                 toggleCategories(clickedCategory);
                 addDeleteNoteButtonListeners();
+                addEditNoteButtonListener();
             }
         });
     }

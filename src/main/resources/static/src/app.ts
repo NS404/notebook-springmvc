@@ -48,22 +48,21 @@ function openNewNotePopup(event?: Event) {
 
     if(editMode) {
         let noteElm = (event?.target as HTMLElement).parentElement as HTMLElement;
-        let noteId = noteElm.getAttribute("data-id");
+        let noteId = noteElm.getAttribute("data-id") as string;
         let noteTitle: string = (noteElm.querySelector(".noteTitle") as HTMLElement).innerText;
         let noteContent: string = (noteElm.querySelector(".noteContent") as HTMLElement).innerText;
 
 
         (document.getElementById("newNoteTitle") as HTMLInputElement).value = noteTitle;
         (document.getElementById("noteContentArea") as HTMLInputElement).value = noteContent;
+        (document.getElementById("noteIdHidden") as HTMLInputElement).value = noteId;
+
 
         writeNoteButton.innerText = "Edit";
         writeNoteButton.removeEventListener("click", createNote);
-        writeNoteButton.addEventListener("click",function () {
-            editNote(noteId);
-        });
+        writeNoteButton.addEventListener("click",editNote);
     }else {
         writeNoteButton.innerText = "Note";
-        // @ts-ignore
         writeNoteButton.removeEventListener("click",editNote);
         writeNoteButton.addEventListener("click",createNote);
     }
@@ -100,12 +99,14 @@ function addCategoryListeners() {
         clickCategory(event as Event);
     })
     addDeleteCatButtonListeners();
+    addEditCatButtonListener();
 }
 
-function editNote(noteId?: String) {
+function editNote(event: Event) {
 
     let noteTitleInput = document.getElementById('newNoteTitle') as HTMLInputElement;
     let noteContentInput = document.getElementById('noteContentArea') as HTMLInputElement;
+    let noteId: string = (document.getElementById("noteIdHidden") as HTMLInputElement).value
 
     if (noteTitleInput.value.trim().length  && noteContentInput.value.trim().length) {
 
@@ -114,18 +115,18 @@ function editNote(noteId?: String) {
         let editedContent: string = (document.getElementById('noteContentArea') as HTMLInputElement).value;
         (document.getElementById('noteContentArea') as HTMLInputElement).value = '';
         let noteElm = (event.target as HTMLElement).parentElement as HTMLElement;
-        let noteId = noteElm.getAttribute("data-id");
 
 
         $.ajax({
-            async: false,
+            async: true,
             type: "PUT",
             url: context+"/Notes/edit",
             data: {noteId: noteId, editedTitle: editedTitle, editedContent: editedContent},
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                (noteElm.querySelector(".noteTitle") as HTMLElement).innerText = editedTitle;
-                (noteElm.querySelector(".noteContent") as HTMLElement).innerText = editedContent;
+            success: function (data) {
+                $("#notesDiv").replaceWith(data);
+                addDeleteNoteButtonListeners();
+                addEditNoteButtonListener();
+                closeNewNotePopup();
             }
         });
     }
@@ -157,6 +158,7 @@ function createNote() {
                 success: function (data) {
                     $("#notesDiv").replaceWith(data);
                     addDeleteNoteButtonListeners();
+                    addEditNoteButtonListener();
                     updateCategories();
                 }
             });
@@ -202,6 +204,7 @@ export function clickCategory(e: Event){
             $("#notesDiv").append(data);
             toggleCategories(clickedCategory);
             addDeleteNoteButtonListeners();
+            addEditNoteButtonListener();
         }
     });
 

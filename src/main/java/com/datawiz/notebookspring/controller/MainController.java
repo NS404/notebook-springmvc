@@ -3,11 +3,13 @@ package com.datawiz.notebookspring.controller;
 import com.datawiz.notebookspring.model.Category;
 import com.datawiz.notebookspring.model.Note;
 import com.datawiz.notebookspring.service.NotebookService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -89,11 +91,22 @@ public class MainController {
     }
 
     @RequestMapping(value = "Notes/edit", method = RequestMethod.PUT)
-    public void editNote(@RequestParam String noteId,
+    public String editNote(@RequestParam String noteId,
                            @RequestParam String editedTitle,
-                           @RequestParam String editedContent){
+                           @RequestParam String editedContent,
+                            Model model){
+
+        System.out.println(noteId);
+        System.out.println(editedTitle);
+        System.out.println(editedContent);
 
         notebookService.editNote(noteId,editedTitle,editedContent);
+
+        model.addAttribute("notes", notebookService.getSelectedCategory().getNotes());
+
+        return "notes-fragment :: notes";
+
+
 
     }
 
