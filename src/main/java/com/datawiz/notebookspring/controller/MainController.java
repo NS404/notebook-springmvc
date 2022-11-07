@@ -3,13 +3,11 @@ package com.datawiz.notebookspring.controller;
 import com.datawiz.notebookspring.model.Category;
 import com.datawiz.notebookspring.model.Note;
 import com.datawiz.notebookspring.service.NotebookService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -20,6 +18,7 @@ public class MainController {
 
     public MainController(NotebookService notebookService){
         this.notebookService = notebookService;
+        System.out.println("controller initialized");
 
     }
 
@@ -71,6 +70,26 @@ public class MainController {
         return "categories-fragment :: cats";
     }
 
+    @RequestMapping(value = "/Categories/edit", method = RequestMethod.PUT)
+    public String editCategory(@RequestParam String categoryId, @RequestParam String editedName, Model model){
+
+        notebookService.editCategory(categoryId, editedName);
+
+        model.addAttribute("categories", notebookService.getCategories());
+
+        return "categories-fragment :: cats";
+    }
+
+    @RequestMapping(value = "Categories/delete", method = RequestMethod.DELETE)
+    public String deleteCategory(@RequestParam String categoryId, Model model){
+
+        notebookService.deleteCategory(categoryId);
+        model.addAttribute("categories", notebookService.getCategories());
+
+        return "categories-fragment :: cats";
+
+    }
+
     @RequestMapping(value="/Notes/create", method = RequestMethod.POST)
     public String createNote(@RequestParam String noteTitle, @RequestParam String noteContent, Model model){
 
@@ -96,27 +115,11 @@ public class MainController {
                            @RequestParam String editedContent,
                             Model model){
 
-        System.out.println(noteId);
-        System.out.println(editedTitle);
-        System.out.println(editedContent);
-
         notebookService.editNote(noteId,editedTitle,editedContent);
 
         model.addAttribute("notes", notebookService.getSelectedCategory().getNotes());
 
         return "notes-fragment :: notes";
-
-
-
-    }
-
-    @RequestMapping(value = "Categories/delete", method = RequestMethod.DELETE)
-    public String deleteCategory(@RequestParam String categoryId, Model model){
-
-        notebookService.deleteCategory(categoryId);
-        model.addAttribute("categories", notebookService.getCategories());
-
-        return "categories-fragment :: cats";
 
     }
 }

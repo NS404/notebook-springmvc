@@ -68,7 +68,7 @@ System.register("app", [], function (exports_1, context_1) {
             document.getElementById('noteContentArea').value = '';
             let noteElm = event.target.parentElement;
             $.ajax({
-                async: true,
+                async: false,
                 type: "PUT",
                 url: context + "/Notes/edit",
                 data: { noteId: noteId, editedTitle: editedTitle, editedContent: editedContent },
@@ -82,6 +82,31 @@ System.register("app", [], function (exports_1, context_1) {
         }
     }
     function editCategory(event) {
+        event.stopPropagation();
+        let category = event.target.parentElement;
+        let categoryNameInput = document.createElement("input");
+        categoryNameInput.classList.add("categoryNameEdit");
+        categoryNameInput.value = category.querySelector(".categoryName").innerHTML;
+        category.querySelector(".categoryName").replaceWith(categoryNameInput);
+        categoryNameInput.focus();
+        categoryNameInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                let editedName = categoryNameInput.value.trim();
+                if (editedName) {
+                    let categoryId = category.getAttribute("data-id");
+                    $.ajax({
+                        async: false,
+                        type: "PUT",
+                        data: { categoryId: categoryId, editedName: editedName },
+                        url: context + "/Categories/edit",
+                        success: function (data) {
+                            //$("#categoriesDiv").replaceWith(data);
+                            updateCategories();
+                        }
+                    });
+                }
+            }
+        });
     }
     function createNote() {
         let noteTitleInput = document.getElementById('newNoteTitle');
@@ -164,11 +189,6 @@ System.register("app", [], function (exports_1, context_1) {
                 });
             }
             event.stopPropagation();
-            // category.remove();
-            // if(selectedCategory.name === categoryName) {
-            //     deSelectedCategory();
-            // }
-            // reRenderNotes(selectedCategory);
         }
     }
     function deleteNote(event) {
@@ -219,8 +239,6 @@ System.register("app", [], function (exports_1, context_1) {
             addCategoryListeners();
             addDeleteNoteButtonListeners();
             addEditNoteButtonListener();
-            addEditCatButtonListener();
-            addEditCatButtonListener();
         }
     };
 });

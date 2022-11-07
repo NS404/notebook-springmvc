@@ -97,4 +97,9 @@ public class NotebookService {
         noteRepo.updateNote(editedTitle,editedContent,Integer.parseInt(noteId));
         selectedCategory.setNotes(noteRepo.getNOtesByCategory(selectedCategory));
     }
+
+    public void editCategory(String categoryId, String editedName) {
+        categoryRepo.updateCategory(Integer.parseInt(categoryId), editedName);
+        categories = (List<Category>) categoryRepo.findAll();
+    }
 }
