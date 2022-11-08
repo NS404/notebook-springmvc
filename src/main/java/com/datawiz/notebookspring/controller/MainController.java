@@ -1,5 +1,7 @@
 package com.datawiz.notebookspring.controller;
 
+import com.datawiz.notebookspring.exceptions.ItemNotFoundException;
+import com.datawiz.notebookspring.exceptions.SupportInfoException;
 import com.datawiz.notebookspring.model.Category;
 import com.datawiz.notebookspring.model.Note;
 import com.datawiz.notebookspring.service.NotebookService;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -121,5 +124,11 @@ public class MainController {
 
         return "notes-fragment :: notes";
 
+    }
+
+    @RequestMapping(value = "/Error")
+    public String throwError() {
+
+        throw new SupportInfoException("Hello from controller");
     }
 }
